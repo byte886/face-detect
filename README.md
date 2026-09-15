@@ -9,6 +9,7 @@
 ## 目录
 
 - `SKILL.md`：技能入口与路由
+- `references/usage.md`：编译、跑检测、awk 筛选、联系表工作流
 - `scripts/face_detect.swift`：Vision 人脸计数源码（按 SKILL 指引编译到 `/tmp` 后运行）
 
 ## 许可
