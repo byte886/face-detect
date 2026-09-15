@@ -28,44 +28,15 @@ compatibility: "仅在 macOS(Darwin) 实测可用；Windows/Linux 未适配。�
 
 ## 安装（编译一次即可）
 
-```bash
-# 编译到 /tmp/face_detect（也可放到 ~/bin/）
-cat > /tmp/face_detect.swift << 'SWIFTEOF'
-import Foundation
-import Vision
-import AppKit
+源码在技能脚本 `scripts/face_detect.swift`，编译到 `/tmp/face_detect` 复用（也可改输出到 `~/bin/`）：
 
-if CommandLine.arguments.count < 2 {
-    fputs("Usage: face_detect <directory>\n", stderr)
-    exit(1)
-}
-let dir = CommandLine.arguments[1]
-let fm = FileManager.default
-guard let files = try? fm.contentsOfDirectory(atPath: dir) else {
-    fputs("Cannot read directory\n", stderr)
-    exit(1)
-}
-let exts: Set<String> = ["jpg", "jpeg", "png", "heic", "gif", "bmp", "tiff"]
-for f in files.sorted() {
-    let ext = (f as NSString).pathExtension.lowercased()
-    guard exts.contains(ext) else { continue }
-    let path = (dir as NSString).appendingPathComponent(f)
-    guard let img = NSImage(contentsOfFile: path),
-          let cg = img.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-        print("\(f)\t0")
-        continue
-    }
-    let req = VNDetectFaceRectanglesRequest()
-    let handler = VNImageRequestHandler(cgImage: cg, options: [:])
-    try? handler.perform([req])
-    let count = req.results?.count ?? 0
-    print("\(f)\t\(count)")
-}
-SWIFTEOF
-swiftc -O /tmp/face_detect.swift -o /tmp/face_detect -framework Vision -framework AppKit
+```bash
+# $SKILL_DIR 为本技能目录（双机家目录名不同，一律用 $HOME 派生、不写死用户名）
+SKILL_DIR="$HOME/Doubao/skills/face-detect"
+swiftc -O "$SKILL_DIR/scripts/face_detect.swift" -o /tmp/face_detect -framework Vision -framework AppKit
 ```
 
-编译成功后 `/tmp/face_detect` 可执行文件可重复使用（重启后 /tmp 可能被清理，需重新编译）。
+编译成功后 `/tmp/face_detect` 可重复使用（重启后 /tmp 可能被清理，重跑上面一行即可，约 5 秒）。
 
 ## 使用方法
 
