@@ -1,4 +1,5 @@
 ---
+type: capability
 name: face-detect
 description: macOS 本地批量人脸检测/数人脸工具。基于系统 Vision 框架（Swift，零第三方依赖、纯本地、图片不上传），对目录下所有图片检测人脸数量，输出『文件名<TAB>人脸数』TSV。当用户要统计/检测照片里有几张人脸、按人脸数给照片分组、区分有人脸与无人脸（风景/文档/截图）、单人照与多人合照，或为照片整理(photo-organize)做预筛选时使用。只数人脸数量，不识别人物身份。
 compatibility: 仅在 macOS(Darwin) 实测可用；Windows/Linux 未适配。执行前先判平台(uname -s 返回 Darwin)，非 macOS 停止并告知需另行适配、不硬跑；本机依赖 macOS + Swift(swiftc) + Vision 框架，无需第三方库
